@@ -39,4 +39,3 @@ def download_embeddings():
     
     return embeddings
 
-    

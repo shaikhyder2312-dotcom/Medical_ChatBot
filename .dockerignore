@@ -1,0 +1,8 @@
+.git
+.github
+.env
+venv
+medicalbot
+__pycache__
+*.pyc
+*.log

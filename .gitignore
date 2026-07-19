@@ -216,3 +216,32 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+# Virtual environments
+medicalbot/
+.venv/
+venv/
+
+# Environment variables / secrets
+.env
+.env.*
+
+# Docker
+.docker/
+
+# Docker compose overrides
+docker-compose.override.yml
+
+# Logs
+logs/
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# GitHub Actions local files
+.github/*.env

@@ -6,11 +6,21 @@ on:
 
 jobs:
   Continuous-Integration:
+
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Show current files
+        run: |
+          pwd
+          ls -la
+          echo "----- requirements.txt -----"
+          cat requirements.txt
+          echo "----- git commit -----"
+          git rev-parse HEAD
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -25,31 +35,35 @@ jobs:
 
       - name: Debug ECR values
         run: |
-          echo "Registry: ${{ steps.login-ecr.outputs.registry }}"
-          echo "Repository: ${{ secrets.ECR_REPO }}"
-          echo "Region: ${{ secrets.AWS_DEFAULT_REGION }}"
+          echo "Registry=${{ steps.login-ecr.outputs.registry }}"
+          echo "Repository=${{ secrets.ECR_REPO }}"
 
-      - name: Check requirements
-        run: |
-          cat requirements.txt
-          git rev-parse HEAD
-
-      - name: Build, tag, and push image to Amazon ECR
+      - name: Build Docker image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: ${{ secrets.ECR_REPO }}
           IMAGE_TAG: latest
         run: |
-          docker build --no-cache -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker build --no-cache \
+          -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+
+      - name: Push Docker image to ECR
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: ${{ secrets.ECR_REPO }}
+          IMAGE_TAG: latest
+        run: |
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
 
   Continuous-Deployment:
+
     needs: Continuous-Integration
     runs-on: self-hosted
 
     steps:
-      - name: Checkout
+
+      - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Configure AWS credentials
@@ -63,12 +77,16 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
-      - name: Stop old container
+      - name: Pull latest image
+        run: |
+          docker pull ${{ steps.login-ecr.outputs.registry }}/${{ secrets.ECR_REPO }}:latest
+
+      - name: Remove old container
         run: |
           docker stop medicalbot || true
           docker rm medicalbot || true
 
-      - name: Run Docker Image to serve users
+      - name: Run latest container
         run: |
           docker run -d \
           --name medicalbot \
@@ -78,4 +96,4 @@ jobs:
           -e PINECONE_API_KEY="${{ secrets.PINECONE_API_KEY }}" \
           -e OPENAI_API_KEY="${{ secrets.OPENAI_API_KEY }}" \
           -p 8080:8080 \
-          "${{ steps.login-ecr.outputs.registry }}/${{ secrets.ECR_REPO }}:latest"
+          ${{ steps.login-ecr.outputs.registry }}/${{ secrets.ECR_REPO }}:latest

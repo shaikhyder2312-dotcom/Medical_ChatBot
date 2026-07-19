@@ -28,7 +28,8 @@ retriever=docsearch.as_retriever(search_type='similarity',search_kwargs={'k':3})
 
 llm = ChatOllama(
     model="llama3",
-    temperature=0.3
+    temperature=0.3,
+    base_url="http://host.docker.internal:11434"
 )
 prompt= ChatPromptTemplate.from_messages(
     [

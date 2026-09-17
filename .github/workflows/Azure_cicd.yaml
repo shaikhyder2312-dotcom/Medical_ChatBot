@@ -40,6 +40,12 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
+      - name: Check Azure and ACR
+        run: |
+          echo "ACR_NAME=$ACR_NAME"
+          az account show --query "{subscription:id,tenant:tenantId,user:user.name}" -o table
+          az acr show --name $ACR_NAME --query "{name:name,loginServer:loginServer,location:location,sku:sku.name}" -o table
+
       - name: Login to Azure Container Registry
         run: |
           az acr login --name $ACR_NAME

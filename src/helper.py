@@ -19,7 +19,7 @@ def minimal_docs(docs: List[Document]):
         min_docs.append(
             Document (
             page_content=doc.page_content,
-            metadata={'sorce':src}
+            metadata={'source':src}
             )
         )
     return min_docs   

@@ -1,8 +1,40 @@
+# Git
 .git
 .github
+.gitignore
+
+# Environment / secrets
 .env
+.env.*
+
+# Python
 venv
-medicalbot
+.venv
 __pycache__
 *.pyc
-*.log 
+*.pyo
+*.pyd
+
+# Logs
+*.log
+
+# Old GitHub Actions self-hosted runner
+actions-runner
+
+# Research / development files
+research
+*.ipynb
+
+# Medical source data
+data
+
+# Build/package artifacts
+*.egg-info
+dist
+build
+
+# IDE / OS files
+.vscode
+.idea
+.DS_Store
+Thumbs.db

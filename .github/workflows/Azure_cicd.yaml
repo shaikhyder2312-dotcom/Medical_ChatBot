@@ -39,13 +39,12 @@ jobs:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          enable-AzPSSession: false
 
-      - name: Check Azure and ACR
+      - name: Check Azure Login
         run: |
           echo "ACR_NAME=$ACR_NAME"
-          az account set --subscription "634cd74f-3c11-4cfe-afde-4c0c8b1bd122"
           az account show --query "{subscription:id,tenant:tenantId}" -o table
-          az acr show --name $ACR_NAME --resource-group Hyder --query "{name:name,loginServer:loginServer,location:location,sku:sku.name}" -o table
 
       - name: Login to Azure Container Registry
         run: |

@@ -45,7 +45,7 @@ jobs:
           echo "ACR_NAME=$ACR_NAME"
           az account set --subscription "634cd74f-3c11-4cfe-afde-4c0c8b1bd122"
           az account show --query "{subscription:id,tenant:tenantId}" -o table
-          az acr show --name $ACR_NAME --query "{name:name,loginServer:loginServer,location:location,sku:sku.name}" -o table
+          az acr show --name $ACR_NAME --resource-group Hyder --query "{name:name,loginServer:loginServer,location:location,sku:sku.name}" -o table
 
       - name: Login to Azure Container Registry
         run: |

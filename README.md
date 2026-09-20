@@ -2,7 +2,7 @@
 
 An AI-powered medical question-answering application using **Retrieval-Augmented Generation (RAG)**, **Llama 3**, **Ollama**, and **Pinecone** to provide responses from a medical knowledge base.
 
-![Medical ChatBot](screenshots/Medical1.png)
+![Medical ChatBot](Screenshots/Medical1.png)
 
 ## Overview
 
@@ -190,11 +190,11 @@ http://localhost:8080
 
 ### Chatbot Interface
 
-![Chatbot Interface](screenshots/Medical1.png)
+![Chatbot Interface](Screenshots/Medical1.png)
 
 ### Medical Question and Response
 
-![Question and Response](screenshots/Medical2.png)
+![Question and Response](Screenshots/Medical2.png)
 
 ## Technical Implementation
 
